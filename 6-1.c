@@ -5,8 +5,37 @@
 #define MAXWORD 100
 #define NKEYS (sizeof keytab / sizeof(struct key))
 
+struct key {
+	char *word;
+	int count;
+};
+struct key keytab[] =
+{
+	"auto", 0,
+	"break", 0,
+	"case", 0,
+	"char", 0,
+	"const",0,
+	"continue", 0,
+	"default", 0,
+	"unsigned", 0,
+	"void", 0,
+	"volatile",0,
+	"while", 0
+};
+
+char c = 'k';
+
 int getword(char *,int);
-int binsearch(char *, struct key *, int);
+int binsearch(char *word, struct key tab[], int n);
+
+int getch(void);
+void ungetch(int c);
+
+#define BUFSIZE 100
+
+char buf[BUFSIZE];
+int bufp = 0;
 
 int main () 
 {
@@ -87,3 +116,19 @@ int getword(char *word, int lim)
 		return word[0];
 }
 
+int getch(void)
+{
+	return (bufp > 0) ? buf[--bufp] : getchar();
+}
+
+void ungetch(int c)
+{
+	if (bufp >= BUFSIZE)
+	{
+		printf("ungetch: too many characters\n");
+	}
+	else
+	{
+		buf[bufp++] = c;
+	}
+}
