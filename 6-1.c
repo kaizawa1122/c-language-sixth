@@ -24,8 +24,6 @@ struct key keytab[] =
 	"while", 0
 };
 
-char c = 'k';
-
 int getword(char *,int);
 int binsearch(char *word, struct key tab[], int n);
 
