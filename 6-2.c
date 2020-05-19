@@ -7,6 +7,7 @@
 struct tnode *addtree(struct tnode *p, char *w);
 void treeprint(struct tnode *);
 int getword(char *,int);
+char *number;
 
 void treeprint(struct tnode *p);
 
@@ -16,13 +17,53 @@ struct tnode {
 	struct tnode *right;
 };
 
+struct gnode {
+	char  *word;
+	struct tnode *list[MAXWORD];
+	struct gnode *next;
+}
+
+void createGroup(struct gnode *g, struct gnode *t)
+{
+	if (t != NULL)
+	{
+		createGroup(g, t->left);
+		addGroup(g,t);
+		createGroup(g, t->right);
+	}
+}
+
+struct gnode *addGroup(struct gnode *g, struct tnode *t )
+{
+	char *s
+	s = strdup01(t -> word);
+
+	if (g == NULL) 
+	{
+		g =  (struct tnode *) malloc(sizeof(struct tnode));
+		g ->word = s;
+		g -> next = NULL;
+		g -> list[0] = t;
+		g -> count = 1;
+	}
+	else if (strncmp(g -> word, t->word, number) == 0) 
+	{
+		g -> list[g-> count++] == t;
+	}
+	else 
+	{
+		g -> next = addGroup(g->next,t);
+	}
+
+	return g;
+}
 int argvnumber;
 
 int main(int argc, char *argv[])
 {
 	struct tnode *root;
+	struct tnode *groot;
 	char word[MAXWORD];
-	char *number;
 
 	root = NULL;
 
@@ -56,7 +97,7 @@ struct tnode *addtree(struct tnode *p, char *w)
 	}
 	else if ((cond = strncmp(w, p->word,argvnumber)) == 0)
 	{
-		return p;
+		p -> count++;
 	}
 	else if (cond < 0)
 	{
@@ -69,13 +110,17 @@ struct tnode *addtree(struct tnode *p, char *w)
 	return p;
 }
 
-void treeprint(struct tnode *p)
+void gprint(struct gnode *g)
 {
-	if (p != NULL) 
+	if (g != NULL) 
 	{
-		treeprint(p->left);
-		printf("%s\n", p->word);
-		treeprint(p->right);
+		printf("%s\n", g->list);
+		for (int i =0; i<g->count; ++i)
+		{
+			printf("%s\n", g -> list[i]->word);
+		}
+		printf("\n");
+		gprint(g->next);
 	}
 }
 

@@ -54,15 +54,10 @@ struct tnode *addtree(struct tnode *p, char *w)
 		p->word = strdup01(w);
 		p->left = p->right = NULL;
 	}
-	else if ((cond = strncmp(w, p->word,argvnumber)) >= 0)
+	else if ((cond = strncmp(w, p->word,argvnumber)) == 0)
 	{
-		printf("w = %s,p->word = %s\n",w,p ->word);
+		printf("xxx = %s,p->word = %s\n",w,p ->word);
 		p->left = addtree(p->left,w);
-	}
-	else if (cond < 0)
-	{
-		printf("w = %s,p->word = %s\n",w,p ->word);
-		p->right = addtree(p->right,w);
 	}
 	return p;
 }
