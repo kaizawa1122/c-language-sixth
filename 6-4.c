@@ -5,15 +5,15 @@
 
 #define MAXWORD 100
 struct tnode *addword(struct tnode *p, char *w);
-void treeprint(struct tnode *);
+void listprint(struct tnode *);
 int getword(char *,int);
 
-void treeprint(struct tnode *p);
+int sort(const void *x, const void *y);
 
 struct tnode {
 	char *word;
 	int count;
-	struct tnode *list;
+	struct tnode *next;
 };
 
 int main(void)
@@ -32,7 +32,7 @@ int main(void)
 		}
 	}
 
-	treeprint(root);
+	listprint(root);
 	return 0;
 }
 
@@ -56,16 +56,16 @@ struct tnode *addword(struct tnode *p, char *w)
 	}
 	else 
 	{
-		p->list = addword(p->list,w);
+		p->next = addword(p->next,w);
 	}
 	return p;
 }
 
-void treeprint(struct tnode *p)
+void listprint(struct tnode *p)
 {
 	if (p != NULL) 
 	{
-		treeprint(p->list);
+		listprint(p->next);
 		printf("%4d %s\n",p->count, p->word);
 	}
 }
@@ -115,9 +115,8 @@ int getword(char *word, int lim)
 	return word[0];
 }
 
-int cmp(const void *x, const void *y)
+int sort(const void *x, const void *y)
 {
-	//return ((
 }
 
 
