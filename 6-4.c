@@ -7,8 +7,7 @@
 struct tnode *addword(struct tnode *p, char *w);
 void listprint(struct tnode *);
 int getword(char *,int);
-
-int sort(const void *x, const void *y);
+int length(struct tnode *p);
 
 struct tnode {
 	char *word;
@@ -21,6 +20,7 @@ int main(void)
 	struct tnode *root;
 	char word[MAXWORD];
 	char *number;
+	int len;
 
 	root = NULL;
 
@@ -32,6 +32,9 @@ int main(void)
 		}
 	}
 
+	len = length(root);
+	
+	selectsort(root,len);
 	listprint(root);
 	return 0;
 }
@@ -59,6 +62,38 @@ struct tnode *addword(struct tnode *p, char *w)
 		p->next = addword(p->next,w);
 	}
 	return p;
+}
+
+int length(struct tnode *p)	
+{
+	int len = 0;
+	while(p != NULL)
+	{
+		++len;
+	}
+	return len;
+}
+
+
+void selectsort(struct tnode *p, int n)
+{
+
+	for (int i = 0; i < n - 1; i++)
+	{
+		struct tnode *t = p->next;
+		struct tnode *x - p;
+		int count = p -> count;
+
+		for (int j = i+1; j<n; j++)
+		{
+			if (count < t ->count)
+			{
+				count = t -> count
+				*x = t;
+			}
+			t = t->next;
+		}
+	}
 }
 
 void listprint(struct tnode *p)
@@ -114,11 +149,6 @@ int getword(char *word, int lim)
 	*w = '\0';
 	return word[0];
 }
-
-int sort(const void *x, const void *y)
-{
-}
-
 
 #define BUFSIZE 100
 
