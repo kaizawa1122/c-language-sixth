@@ -8,6 +8,8 @@ struct tnode *addword(struct tnode *p, char *w);
 void listprint(struct tnode *);
 int getword(char *,int);
 int length(struct tnode *p);
+void selectsort(struct tnode *p, int n);
+void swap(struct tnode *ptr1,struct tnode *ptr2);
 
 struct tnode {
 	char *word;
@@ -77,18 +79,17 @@ int length(struct tnode *p)
 
 void selectsort(struct tnode *p, int n)
 {
-
 	for (int i = 0; i < n - 1; i++)
 	{
 		struct tnode *t = p->next;
-		struct tnode *x - p;
+		struct tnode *x = p;
 		int count = p -> count;
 
 		for (int j = i+1; j<n; j++)
 		{
-			if (count < t ->count)
+			if (count < (t ->count))
 			{
-				count = t -> count
+				count = t -> count;
 				*x = t;
 			}
 			t = t->next;
@@ -103,6 +104,15 @@ void listprint(struct tnode *p)
 		listprint(p->next);
 		printf("%4d %s\n",p->count, p->word);
 	}
+}
+
+void swap(struct tnode *ptr1,struct tnode *ptr2)
+{
+	struct tnode hold;
+
+	hold = *ptr1;
+	*ptr1 = *ptr2;
+	*ptr2 = hold;
 }
 
 struct tnode *talloc(void)
