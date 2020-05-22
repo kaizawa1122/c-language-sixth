@@ -9,7 +9,6 @@ void listprint(struct tnode *);
 int getword(char *,int);
 int length(struct tnode *p);
 void selectsort(struct tnode *p, int n);
-void swap(struct tnode *ptr1,struct tnode *ptr2);
 
 struct tnode *talloc(void);
 char *strdup01(char *s);
@@ -27,20 +26,20 @@ int main(void)
 	char *number;
 	int len;
 
-	root = talloc();
+	root = NULL;
 
 	while (getword(word,MAXWORD) != EOF)
 	{
 		if (isalpha(word[0]))
 		{
-			root -> next = addword(root -> next, word);
+			root = addword(root, word);
 		}
 	}
 
-	len = length(root -> next);
+	len = length(root);
 	
-	selectsort(root -> next,len);
-	listprint(root -> next);
+	selectsort(root,len);
+	listprint(root);
 	return 0;
 }
 
@@ -81,23 +80,25 @@ int length(struct tnode *p)
 
 void selectsort(struct tnode *p, int n)
 {
-	for (int i = 0; i < n - 1; i++)
+	int i;
+	for (i = 0; i < n - 1; i++)
 	{
-		struct tnode *t = p->next;
-		struct tnode *x = p;
+		struct tnode *t = p; //origin
+		struct tnode *x = p; //Input max of number
 
 		for (int j = i+1; j<n; j++)
 		{
-			if ((x -> count) < (t ->count))
+			if ((x -> count) < (t ->count)) // if old max < origin
 			{
-				x = t;
+				x = t; // Input max
 			}
-			t = t->next;
+			t = t->next; //point next
 		}
-
-		swap(p,x);
-		p = p -> next;
+		(p + i) -> next = x;
+		p = p -> next; //二文字目以降next
 	}
+
+	(p + i) -> next = NULL; //最後の文字にNULL挿入
 }
 
 void listprint(struct tnode *p)
@@ -107,17 +108,6 @@ void listprint(struct tnode *p)
 		listprint(p->next);
 		printf("%4d %s\n",p->count, p->word);
 	}
-}
-
-void swap(struct tnode *x,struct tnode *p,struct tnode *q)
-{
-	struct tnode *p;
-
-	h = p -> next;
-	p -> next = q ->next;
-	q -> next = h;
-	h = p;
-	x -> next = q;
 }
 
 struct tnode *talloc(void)
