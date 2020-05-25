@@ -81,10 +81,14 @@ int length(struct tnode *p)
 void selectsort(struct tnode *p, int n)
 {
 	int i;
+
+	struct tnode *q;
+	q -> next = p;
 	for (i = 0; i < n - 1; i++)
 	{
-		struct tnode *t = p; //origin
+		struct tnode *t = q; //origin
 		struct tnode *x = p; //Input max of number
+		struct tnode *y = t;
 
 		for (int j = i+1; j<n; j++)
 		{
@@ -94,11 +98,19 @@ void selectsort(struct tnode *p, int n)
 			}
 			t = t->next; //point next
 		}
-		(p + i) -> next = x;
-		p = p -> next; //二文字目以降next
+		while(y->next !=x)
+		{
+			y = y->next;
+		}
+		t->next = x; // 変えたい対象を指す
+		x->next = t -> next;
+		y->next = t;
+		(t->next->next) = (x->next);
+		p = p->next; //二文字目以降next
+
 	}
 
-	(p + i) -> next = NULL; //最後の文字にNULL挿入
+	p -> next = NULL; //最後の文字にNULL挿入
 }
 
 void listprint(struct tnode *p)
