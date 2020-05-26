@@ -83,7 +83,7 @@ void selectsort(struct tnode *p, int n)
 	int i;
 
 	struct tnode *q;
-	q -> next = p;
+	q = p -> next;
 	for (i = 0; i < n - 1; i++)
 	{
 		struct tnode *t = q; //origin
@@ -92,22 +92,21 @@ void selectsort(struct tnode *p, int n)
 
 		for (int j = i+1; j<n; j++)
 		{
-			if ((x -> count) < (t ->count)) // if old max < origin
+			if ((t->next != NULL) && (x->count) < (t->count)) // if old max < origin
 			{
 				x = t; // Input max
+				t = t->next; //point next
 			}
-			t = t->next; //point next
 		}
-		while(y->next !=x)
+		while(y->next != x)
 		{
 			y = y->next;
+			printf("x ==%p y ==%p\n",x,y);
 		}
-		t->next = x; // 変えたい対象を指す
 		x->next = t -> next;
 		y->next = t;
 		(t->next->next) = (x->next);
 		p = p->next; //二文字目以降next
-
 	}
 
 	p -> next = NULL; //最後の文字にNULL挿入
