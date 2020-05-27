@@ -83,33 +83,35 @@ void selectsort(struct tnode *p, int n)
 	int i;
 
 	struct tnode *q;
-	q = p -> next;
+	q -> next = p; //次の構造体から見るようにする
+
 	for (i = 0; i < n - 1; i++)
 	{
 		struct tnode *t = q; //origin
-		struct tnode *x = p; //Input max of number
-		struct tnode *y = t;
+		struct tnode *x = q; //Input max of number
+		struct tnode *y;
 
 		for (int j = i+1; j<n; j++)
 		{
-			if ((t->next != NULL) && (x->count) < (t->count)) // if old max < origin
+			if (x->count < ((t->next)->count)) // if old max < origin
 			{
 				x = t; // Input max
 				t = t->next; //point next
 			}
 		}
-		while(y->next != x)
-		{
-			y = y->next;
-			printf("x ==%p y ==%p\n",x,y);
-		}
-		x->next = t -> next;
-		y->next = t;
-		(t->next->next) = (x->next);
-		p = p->next; //二文字目以降next
+		//swapの作業 扱うのは、q,xだけ。
+		//qは基準として交換するノードを固定、xはqを含む後のノードの中の最大値のノードのひとつの集団
+		y = q->next; 	   //p->A hold
+		x->next = t->next; //p->A p->B (q->Bはまだある)
+		q->next = y; 	   //q->B : q->a
+		//AとBの位置はもう変わっている
+		y = q->next->next;
+		(q->next->next) = (t->next->next); //A->(Aがさしているやつ)
+
+		q = q->next; //二文字目以降next
 	}
 
-	p -> next = NULL; //最後の文字にNULL挿入
+	q -> next = NULL; //最後の文字にNULL挿入
 }
 
 void listprint(struct tnode *p)
