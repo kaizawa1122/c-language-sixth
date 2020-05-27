@@ -21,7 +21,7 @@ struct tnode {
 
 int main(void)
 {
-	struct tnode *root;
+	struct tnode *root,*q;
 	char word[MAXWORD];
 	char *number;
 	int len;
@@ -36,9 +36,11 @@ int main(void)
 		}
 	}
 
+	q = talloc();
+	q->next = root;
+
 	len = length(root);
-	
-	selectsort(root,len);
+	selectsort(q,len);
 	listprint(root);
 	return 0;
 }
@@ -78,39 +80,38 @@ int length(struct tnode *p)
 }
 
 
-void selectsort(struct tnode *p, int n)
+void selectsort(struct tnode *q, int n)
 {
 	int i;
-
-	struct tnode *q;
-	q -> next = p; //次の構造体から見るようにする
 
 	for (i = 0; i < n - 1; i++)
 	{
 		struct tnode *t = q; //origin
 		struct tnode *x = q; //Input max of number
-		struct tnode *y;
+		struct tnode *a, *b, *c, *d;
 
 		for (int j = i+1; j<n; j++)
 		{
 			if (x->count < ((t->next)->count)) // if old max < origin
 			{
 				x = t; // Input max
-				t = t->next; //point next
 			}
+			t = t->next; //point next
 		}
 		//swapの作業 扱うのは、q,xだけ。
-		//qは基準として交換するノードを固定、xはqを含む後のノードの中の最大値のノードのひとつの集団
-		y = q->next; 	   //p->A hold
-		x->next = t->next; //p->A p->B (q->Bはまだある)
-		q->next = y; 	   //q->B : q->a
-		//AとBの位置はもう変わっている
-		y = q->next->next;
-		(q->next->next) = (t->next->next); //A->(Aがさしているやつ)
+		//保持するためのもの
+		a = t->next;
+		b = x->next;
+		c = t->next->next;
+		d = x->next->next;
+
+		t->next = b;
+		x->next = a;
+		t->next->next = c;
+		x->next->next = d;
 
 		q = q->next; //二文字目以降next
 	}
-
 	q -> next = NULL; //最後の文字にNULL挿入
 }
 
