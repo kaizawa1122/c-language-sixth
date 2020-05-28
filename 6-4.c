@@ -21,7 +21,7 @@ struct tnode {
 
 int main(void)
 {
-	struct tnode *root,*q;
+	struct tnode *root,*q,*t;
 	char word[MAXWORD];
 	char *number;
 	int len;
@@ -35,11 +35,13 @@ int main(void)
 			root = addword(root, word);
 		}
 	}
+	listprint(root);
 
 	q = talloc();
 	q->next = root;
 
 	len = length(root);
+	printf("%d\n",len);
 	selectsort(q,len);
 	listprint(root);
 	return 0;
@@ -86,7 +88,7 @@ void selectsort(struct tnode *q, int n)
 
 	for (i = 0; i < n - 1; i++)
 	{
-		struct tnode *t = q; //origin
+		struct tnode *t = q; 
 		struct tnode *x = q; //Input max of number
 		struct tnode *a, *b, *c, *d;
 
@@ -98,29 +100,31 @@ void selectsort(struct tnode *q, int n)
 			}
 			t = t->next; //point next
 		}
-		//swapの作業 扱うのは、q,xだけ。
+
+		printf("q == %s,x == %s\n",q->next->word,x->next->word);
+
+		//swapの作業。
 		//保持するためのもの
-		a = t->next;
+		a = q->next;
 		b = x->next;
-		c = t->next->next;
+		c = q->next->next;
 		d = x->next->next;
 
-		t->next = b;
+		q->next = b;
 		x->next = a;
-		t->next->next = c;
+		q->next->next = c;
 		x->next->next = d;
 
 		q = q->next; //二文字目以降next
 	}
-	q -> next = NULL; //最後の文字にNULL挿入
 }
 
-void listprint(struct tnode *p)
+void listprint(struct tnode *q)
 {
-	if (p != NULL) 
+	if (q != NULL) 
 	{
-		listprint(p->next);
-		printf("%4d %s\n",p->count, p->word);
+		listprint(q->next);
+		printf("%4d %s\n",q->count, q->word);
 	}
 }
 
