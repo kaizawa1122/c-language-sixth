@@ -9,7 +9,7 @@ void listprint(struct tnode *);
 int getword(char *,int);
 int length(struct tnode *p);
 void selectsort(struct tnode *p, int n);
-int swap(struct tnode *q,struct tnode *x);
+void swap(struct tnode *q,struct tnode *x);
 
 struct tnode *talloc(void);
 char *strdup01(char *s);
@@ -48,10 +48,8 @@ int main(void)
 	}
 	t->next = talloc();
 
-	//listprint(q);
 	selectsort(q,len);
-	//listprint(q);
-	listprint(root);
+	listprint(q->next);
 	return 0;
 }
 
@@ -94,9 +92,7 @@ void selectsort(struct tnode *q, int n)
 {
 	int i;
 
-	struct tnode *p = q;
-
-	for (i = 0; i < n - 1; i++)
+	for (i = 0; i < n - 1 ; i++)
 	{
 		struct tnode *t = q; 
 		struct tnode *x = q; //Input max of number
@@ -106,15 +102,15 @@ void selectsort(struct tnode *q, int n)
 			if (x->count < ((t->next)->count)) // if old max < origin
 			{
 				x = t; // Input max
+				swap(q,x);
 			}
 			t = t->next; //point next
 		}
-		swap(q,x);
 		q = q->next; //二文字目以降next
 	}
 }
 
-int swap(struct tnode *q,struct tnode *x)
+void swap(struct tnode *q,struct tnode *x)
 {
 	struct tnode *a, *b, *c, *d;
 	//swapの作業。
@@ -122,7 +118,6 @@ int swap(struct tnode *q,struct tnode *x)
 
 	if (q == x)
 	{
-		return 0;
 	}
 	else if (q->next == x)
 	{
