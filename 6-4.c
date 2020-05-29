@@ -9,6 +9,7 @@ void listprint(struct tnode *);
 int getword(char *,int);
 int length(struct tnode *p);
 void selectsort(struct tnode *p, int n);
+int swap(struct tnode *q,struct tnode *x);
 
 struct tnode *talloc(void);
 char *strdup01(char *s);
@@ -99,7 +100,6 @@ void selectsort(struct tnode *q, int n)
 	{
 		struct tnode *t = q; 
 		struct tnode *x = q; //Input max of number
-		struct tnode *a, *b, *c, *d,*e;
 
 		for (int j = i+1; j<n; j++)
 		{
@@ -109,24 +109,34 @@ void selectsort(struct tnode *q, int n)
 			}
 			t = t->next; //point next
 		}
-		if(q == x)
-		{
-			continue;
-		}
-		else if (q->next == x)
-		{
-			a = q;
-			b = x;
-			c = q->next->next;
-			d = x->next->next;
+		swap(q,x);
+		q = q->next; //二文字目以降next
+	}
+}
 
-			a->next = c;
-			c->next = b;
-			b->next = d;
-		}
-		else {
-		//swapの作業。
-		//保持するためのもの
+int swap(struct tnode *q,struct tnode *x)
+{
+	struct tnode *a, *b, *c, *d;
+	//swapの作業。
+	//保持するためのもの
+
+	if (q == x)
+	{
+		return 0;
+	}
+	else if (q->next == x)
+	{
+		a = q;
+		b = x;
+		c = q->next->next;
+		d = x->next->next;
+
+		a->next = c;
+		c->next = b;
+		b->next = d;
+	}
+	else 
+	{
 		a = q->next;
 		b = x->next;
 		c = q->next->next;
@@ -136,11 +146,6 @@ void selectsort(struct tnode *q, int n)
 		x->next = a;
 		q->next->next = c;
 		x->next->next = d;
-
-		listprint(p);
-
-		q = q->next; //二文字目以降next
-		}
 	}
 }
 
