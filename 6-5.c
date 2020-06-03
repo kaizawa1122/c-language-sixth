@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #define HASHSIZE 101
 
 static struct nlist *hashtab[HASHSIZE];
 struct nlist *lookup(char *s);
-char *strdup(char *s);
+char *strdup01(char *s);
 
 struct nlist 
 {
@@ -51,7 +52,7 @@ struct nlist *install(char *name, char *defn)
 	if ((np = lookup(name)) == NULL)
 	{
 		np = (struct nlist *) malloc(sizeof(*np));
-		if (np = NULL || (np->name = strdup(name)) == NULL)
+		if (np == NULL || (np->name = strdup(name)) == NULL)
 		{
 			return NULL;
 		}
@@ -61,14 +62,24 @@ struct nlist *install(char *name, char *defn)
 	}
 	else
 	{
-		free((void *) np -> defn);
+		free((void *) np->defn);
 	}
-	if ((np ->defn = strdup(defn)) == NULL)
+	if ((np->defn = strdup(defn)) == NULL)
 	{
 		return NULL;
 	}
 	return np;
 }
 
+char *strdup01(char *s)
+{
+	char *p;
+
+	p = (char *) malloc(strlen(s)+1);
+	if (p != NULL)
+	{
+		strcpy(p,s);
+	}
+}
 
 
