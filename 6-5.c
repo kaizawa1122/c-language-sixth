@@ -3,10 +3,17 @@
 #include <stdlib.h>
 
 #define HASHSIZE 101
+#define BUFSIZE 100
 
 static struct nlist *hashtab[HASHSIZE];
 struct nlist *lookup(char *s);
 char *strdup01(char *s);
+
+int getch();
+char printfhashtab();
+
+char buf[BUFSIZE];
+int bufp = 0;
 
 struct nlist 
 {
@@ -17,6 +24,10 @@ struct nlist
 
 int main ()
 {
+	char a,b;
+	getch();
+	struct nlist *install(a,b);
+	printfhashtab();
 }
 
 unsigned hash(char *s)
@@ -82,4 +93,11 @@ char *strdup01(char *s)
 	}
 }
 
+int getch(void)
+{
+	return (bufp > 0) ? buf[--bufp] : getchar();
+}
+char printfhashtab()
+{
 
+}
