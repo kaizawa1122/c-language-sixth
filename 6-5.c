@@ -4,16 +4,24 @@
 
 #define HASHSIZE 101
 #define BUFSIZE 100
+#define MAXLINE 1001
 
 static struct nlist *hashtab[HASHSIZE];
 struct nlist *lookup(char *s);
 char *strdup01(char *s);
 
 int getch();
-char printfhashtab();
+void printfhashtab();
+void printNode (struct nlist* pList);
+struct nlist *install(char *name, char *defn);
+int getline01(char s[], int lim);
+int strindex(char s[], char t[]);
+int define(void);
 
 char buf[BUFSIZE];
 int bufp = 0;
+
+char *pattern = "#define";
 
 struct nlist 
 {
@@ -24,9 +32,9 @@ struct nlist
 
 int main ()
 {
-	char a,b;
-	getch();
-	struct nlist *install(a,b);
+	char *a,*b;
+	define();
+	install(a,b);
 	printfhashtab();
 }
 
@@ -97,7 +105,80 @@ int getch(void)
 {
 	return (bufp > 0) ? buf[--bufp] : getchar();
 }
-char printfhashtab()
+void printfhashtab()
 {
+	struct nlist* pList;
+	for (int i = 0; i < HASHSIZE; ++i)
+	{
+		pList = hashtab[i];
+		if (pList == NULL)
+		{
+			printf("%d : NULL\n",i);
+		}
+		else
+		{
+			printf("%d : ",i);
+			printNode(pList);
+			puts("\n");
+		}
+	}
+}
 
+void printNode (struct nlist* pList)
+{
+	printf("name %s,defn: %s !----!", pList->name,pList->defn);
+	if (pList->next != NULL)
+	{
+		printNode (pList->next);
+	}
+}
+
+int define(void)
+{
+	char *line;
+	int found = 0;
+
+	while(getline01(line,MAXLINE) > 0)
+	{
+		if (strindex(line, pattern) >= 0)
+		{
+			printf("%s", line);
+			found++;
+		}
+	}
+	return found;
+}
+
+int getline01(char *s, int lim)
+{
+	int c, i;
+
+	i = 0;
+
+	while (--lim > 0 && (c = getchar()) != EOF && c != '\n')
+	{
+			s[i++] = c;
+		}
+	if (c == '\n')
+	{
+			s[i++] = c;
+		}
+	s[i] = '\0';
+	return i;
+}
+
+int strindex(char s[], char t[])
+{
+	int i, j, k;
+
+	for (i = 0; s[i] != '\0'; i++)
+	{
+		for (j=k, k=0; t[k]!='\0' && s[j]==t[k]; j++, k++);
+
+		if (k > 0 && t[k] == '\0')
+		{
+			return i;
+		}
+	}
+	return -1;
 }
