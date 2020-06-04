@@ -34,7 +34,7 @@ int main ()
 {
 	char *a,*b;
 	define();
-	install(a,b);
+	//install(a,b);
 	printfhashtab();
 }
 
@@ -101,10 +101,6 @@ char *strdup01(char *s)
 	}
 }
 
-int getch(void)
-{
-	return (bufp > 0) ? buf[--bufp] : getchar();
-}
 void printfhashtab()
 {
 	struct nlist* pList;
@@ -132,11 +128,12 @@ void printNode (struct nlist* pList)
 		printNode (pList->next);
 	}
 }
-
+//Input Char
 int define(void)
 {
-	char *line;
+	char line[MAXLINE];
 	int found = 0;
+
 
 	while(getline01(line,MAXLINE) > 0)
 	{
@@ -157,17 +154,17 @@ int getline01(char *s, int lim)
 
 	while (--lim > 0 && (c = getchar()) != EOF && c != '\n')
 	{
-			s[i++] = c;
-		}
+		s[i++] = c;
+	}
 	if (c == '\n')
 	{
-			s[i++] = c;
-		}
+		s[i++] = c;
+	}
 	s[i] = '\0';
 	return i;
 }
 
-int strindex(char s[], char t[])
+int strindex(char *s, char *t)
 {
 	int i, j, k;
 
