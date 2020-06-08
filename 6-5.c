@@ -16,7 +16,6 @@ void printNode (struct nlist* pList);
 struct nlist *install(char *name, char *defn);
 int getline01(char s[], int lim);
 int strindex(char s[], char t[]);
-int define(void);
 
 char buf[BUFSIZE];
 int bufp = 0;
@@ -32,9 +31,10 @@ struct nlist
 
 int main ()
 {
-	char *a,*b;
-	define();
-	//install(a,b);
+	char line[MAXLINE];
+	int len = 0;
+
+	install("IN","1");
 	printfhashtab();
 }
 
@@ -129,23 +129,6 @@ void printNode (struct nlist* pList)
 	}
 }
 //Input Char
-int define(void)
-{
-	char line[MAXLINE];
-	int found = 0;
-
-
-	while(getline01(line,MAXLINE) > 0)
-	{
-		if (strindex(line, pattern) >= 0)
-		{
-			printf("%s", line);
-			found++;
-		}
-	}
-	return found;
-}
-
 int getline01(char *s, int lim)
 {
 	int c, i;

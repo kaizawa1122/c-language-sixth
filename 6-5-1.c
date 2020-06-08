@@ -1,29 +1,33 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#define HASHSIZE 101
+
+#define HASHSIZE 3
 #define BUFSIZE 100
 #define MAXLINE 1001
+
 static struct nlist *hashtab[HASHSIZE];
 struct nlist *lookup(char *s);
-char *strdup01(char *s);
-int getch();
+
+void undef(char *s);
 void printfhashtab();
 void printNode (struct nlist* pList);
 struct nlist *install(char *name, char *defn);
 int getline01(char s[], int lim);
 int strindex(char s[], char t[]);
-int define(void);
-int findSpace(char s[]);
+
 char buf[BUFSIZE];
 int bufp = 0;
 char *pattern = "#define";
+char *undefchar = "OUT";
+
 struct nlist 
 {
 	struct nlist *next;
 	char *name;
 	char *defn;
 };
+
 int main ()
 {
 	char line[MAXLINE];
@@ -32,15 +36,17 @@ int main ()
 	{
 		if (strindex(line, pattern) >= 0)
 		{
-			char *a, *b, *t, *token;
+			char *a, *b, *token;
 			token = strtok(line, " ");
 			a = strtok(NULL, " ");
 			b = strtok(NULL, "\n");
 			install(a,b);
+			undef(undefchar);
 		}
 	}
 	printfhashtab();
 }
+
 unsigned hash(char *s)
 {
 	unsigned hashval;
@@ -87,15 +93,27 @@ struct nlist *install(char *name, char *defn)
 	}
 	return np;
 }
-char *strdup01(char *s)
+void undef(char *s)
 {
-	char *p;
-	p = (char *) malloc(strlen(s)+1);
-	if (p != NULL)
+	struct nlist *np,*a,*b;
+
+	if ((np = lookup(s)) != NULL)
 	{
-		strcpy(p,s);
+		for (a = b = hashtab[hash(s)]; a != NULL; a = a->next)
+		{
+			if (a == b)
+			{
+				puts("a");
+				hashtab[hash(s)] = NULL;
+				free(np->name);
+				free(np->defn);
+				break;
+			}
+		}
 	}
 }
+
+//hashtabを表示する
 void printfhashtab()
 {
 	struct nlist* pList;
