@@ -15,11 +15,12 @@ void printNode (struct nlist* pList);
 struct nlist *install(char *name, char *defn);
 int getline01(char s[], int lim);
 int strindex(char s[], char t[]);
+struct nlist *prvlookup(char *s);
 
 char buf[BUFSIZE];
 int bufp = 0;
 char *pattern = "#define";
-char undefchar[MAXLINE] = "OUT";
+char *undefchar = "OUT";
 
 struct nlist 
 {
@@ -41,9 +42,9 @@ int main ()
 			a = strtok(NULL, " ");
 			b = strtok(NULL, "\n");
 			install(a,b);
-			undef(undefchar);
 		}
 	}
+	undef(undefchar);
 	printfhashtab();
 }
 
@@ -72,6 +73,7 @@ struct nlist *lookup(char *s)
 struct nlist *prvlookup(char *s)
 {
 	struct nlist *np;
+
 	for (np = hashtab[hash(s)]; np->next != NULL; np = np->next)
 	{
 		if(strcmp(s,np->next->name) == 0)
