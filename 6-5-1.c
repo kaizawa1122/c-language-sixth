@@ -20,7 +20,7 @@ struct nlist *prvlookup(char *s);
 char buf[BUFSIZE];
 int bufp = 0;
 char *pattern = "#define";
-char *undefchar = "OUT";
+char *undefchar = "IN";
 
 struct nlist 
 {
