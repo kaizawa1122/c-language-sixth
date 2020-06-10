@@ -41,7 +41,7 @@ int main ()
 			a = strtok(NULL, " ");
 			b = strtok(NULL, "\n");
 			install(a,b);
-			undef(undefchar);
+			//undef(undefchar);
 		}
 	}
 	printfhashtab();
@@ -99,14 +99,10 @@ void undef(char *s)
 
 	if ((np = lookup(s)) != NULL)
 	{
-		for (a = b = hashtab[hash(s)]; a != NULL; a = a->next)
+		for (a = hashtab[hash(s)]; a != NULL; a = a->next)
 		{
-			if (a == b)
 			{
-				puts("a");
 				hashtab[hash(s)] = NULL;
-				free(np->name);
-				free(np->defn);
 				break;
 			}
 		}
