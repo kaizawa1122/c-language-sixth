@@ -19,7 +19,7 @@ int strindex(char s[], char t[]);
 char buf[BUFSIZE];
 int bufp = 0;
 char *pattern = "#define";
-char *undefchar = "OUT";
+char undefchar[MAXLINE] = "OUT";
 
 struct nlist 
 {
@@ -41,7 +41,7 @@ int main ()
 			a = strtok(NULL, " ");
 			b = strtok(NULL, "\n");
 			install(a,b);
-			//undef(undefchar);
+			undef(undefchar);
 		}
 	}
 	printfhashtab();
@@ -62,6 +62,19 @@ struct nlist *lookup(char *s)
 	for (np = hashtab[hash(s)]; np != NULL; np = np->next)
 	{
 		if (strcmp(s, np->name) == 0)
+		{
+			return np;
+		}
+	}
+	return NULL;
+}
+
+struct nlist *prvlookup(char *s)
+{
+	struct nlist *np;
+	for (np = hashtab[hash(s)]; np->next != NULL; np = np->next)
+	{
+		if(strcmp(s,np->next->name) == 0)
 		{
 			return np;
 		}
@@ -95,17 +108,17 @@ struct nlist *install(char *name, char *defn)
 }
 void undef(char *s)
 {
-	struct nlist *np,*a,*b;
+	struct nlist *np,*t;
 
-	if ((np = lookup(s)) != NULL)
+	if ((np = prvlookup(s)) != NULL) //定義を探す
 	{
-		for (a = hashtab[hash(s)]; a != NULL; a = a->next)
-		{
-			{
-				hashtab[hash(s)] = NULL;
-				break;
-			}
-		}
+		t = np->next;
+		np->next = np->next->next;
+		free(t);
+	}
+	else
+	{
+		printf("条件に当てはまる定義がありません\n");
 	}
 }
 
