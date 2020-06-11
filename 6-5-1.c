@@ -118,14 +118,12 @@ void undef(char *s)
 	}
 	else if (hashtab[hash(s)]->next == NULL) //一番初めから末端の時
 	{
-		puts("a");
 		free(hashtab[hash(s)]);
 		hashtab[hash(s)] = NULL;
 		return;
 	}
 	else if ((np = prvlookup(s)) != NULL) //二つ以上あるときの削除
 	{
-		puts("b");
 		t = np->next;
 		np->next = np->next->next;
 		free(t);
@@ -133,7 +131,6 @@ void undef(char *s)
 	}
 	else if(hashtab[hash(s)] != NULL) //二つ以上あるときの先頭を削除
 	{
-		puts("c");
 		q = hashtab[hash(s)]->next;
 		free(hashtab[hash(s)]);
 		hashtab[hash(s)] = q;
