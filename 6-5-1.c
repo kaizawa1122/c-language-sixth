@@ -20,7 +20,7 @@ struct nlist *prvlookup(char *s);
 char buf[BUFSIZE];
 int bufp = 0;
 char *pattern = "#define";
-char *undefchar = "main";
+char *undefchar = "OUT";
 
 struct nlist 
 {
@@ -29,7 +29,7 @@ struct nlist
 	char *defn;
 };
 
-int main ()
+int main (void)
 {
 	char line[MAXLINE];
 	int len;
@@ -100,7 +100,7 @@ struct nlist *install(char *name, char *defn)
 	}
 	else
 	{
-		free((void *) np->defn);
+		free(np->defn);
 	}
 	if ((np->defn = strdup(defn)) == NULL)
 	{
@@ -110,7 +110,7 @@ struct nlist *install(char *name, char *defn)
 }
 void undef(char *s)
 {
-	struct nlist *np,*t,*q;
+	struct nlist *np, *t, *q;
 
 	if (lookup(s) == NULL)   //定義されていない文字が挿入されたとき 
 	{
@@ -147,11 +147,11 @@ void printfhashtab()
 		pList = hashtab[i];
 		if (pList == NULL)
 		{
-			printf("%d : NULL\n",i);
+			printf("%d : NULL\n", i);
 		}
 		else
 		{
-			printf("%d : ",i);
+			printf("%d : ", i);
 			printNode(pList);
 			puts("\n");
 		}
@@ -159,7 +159,7 @@ void printfhashtab()
 }
 void printNode (struct nlist* pList)
 {
-	printf("name %s,defn: %s !----!", pList->name,pList->defn);
+	printf("name %s, defn: %s !----!", pList->name, pList->defn);
 	if (pList->next != NULL)
 	{
 		printNode (pList->next);

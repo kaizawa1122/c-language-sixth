@@ -49,11 +49,11 @@ int main (void)
 			char *c, *token02;
 			token02 = strtok(line, " ");
 			c = strtok(NULL, "\n");
-			printf("%s\n",c);
+			undef(c);
 		}
-		printfhashtab();
-		printf("\n");
 	}
+	printfhashtab();
+	printf("\n");
 }
 
 unsigned hash(char *s)
