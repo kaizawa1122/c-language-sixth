@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #define MAXWORD 100
+
 struct tnode *addword(struct tnode *p, char *w);
 void listprint(struct tnode *);
 int getword(char *,int);
