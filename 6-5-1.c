@@ -20,7 +20,7 @@ struct nlist *prvlookup(char *s);
 char buf[BUFSIZE];
 int bufp = 0;
 char *pattern = "#define";
-char *undefchar = "IN";
+char *undefchar = "main";
 
 struct nlist 
 {
@@ -110,17 +110,34 @@ struct nlist *install(char *name, char *defn)
 }
 void undef(char *s)
 {
-	struct nlist *np,*t;
+	struct nlist *np,*t,*q;
 
-	if ((np = prvlookup(s)) != NULL) //定義を探す
+	if (lookup(s) == NULL)   //定義されていない文字が挿入されたとき 
 	{
+		printf("条件に当てはまる定義がありません\n");
+	}
+	else if (hashtab[hash(s)]->next == NULL) //一番初めから末端の時
+	{
+		puts("a");
+		free(hashtab[hash(s)]);
+		hashtab[hash(s)] = NULL;
+		return;
+	}
+	else if ((np = prvlookup(s)) != NULL) //二つ以上あるときの削除
+	{
+		puts("b");
 		t = np->next;
 		np->next = np->next->next;
 		free(t);
+		return;
 	}
-	else
+	else if(hashtab[hash(s)] != NULL) //二つ以上あるときの先頭を削除
 	{
-		printf("条件に当てはまる定義がありません\n");
+		puts("c");
+		q = hashtab[hash(s)]->next;
+		free(hashtab[hash(s)]);
+		hashtab[hash(s)] = q;
+		return;
 	}
 }
 
