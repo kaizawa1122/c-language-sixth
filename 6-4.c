@@ -91,14 +91,14 @@ int length(struct tnode *p)
 
 void selectsort(struct tnode *q, int n)
 {
-	int i;
+	int i,j;
 
 	for (i = 0; i < n - 1 ; i++)
 	{
 		struct tnode *t = q; 
 		struct tnode *x = q; //Input max of number
 
-		for (int j = i+1; j<n; j++)
+		for (j = i+1; j<n; j++)
 		{
 			if (x->count < ((t->next)->count)) // if old max < origin
 			{
@@ -117,10 +117,7 @@ void swap(struct tnode *q,struct tnode *x)
 	//swapの作業。
 	//保持するためのもの
 
-	if (q == x)
-	{
-	}
-	else if (q->next == x)
+	if (q->next == x)
 	{
 		a = q;
 		b = x;
