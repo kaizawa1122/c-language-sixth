@@ -22,7 +22,7 @@ struct tnode {
 
 int main(void)
 {
-	struct tnode *root,*q,*t,*sortedword;
+	struct tnode *root,*start,*sortedword;
 	char word[MAXWORD];
 	char *number;
 	int len;
@@ -38,25 +38,14 @@ int main(void)
 	}
 
 	len = length(root);
-	q = talloc();
-	q->next = root;
-
-	t = q;
-	while(t->next != NULL)
-	{
-		t = t->next;
-	}
-	t->next = talloc();
-
+	start = talloc();
+	start->next = root;
 	sortedword = talloc();
 
-	printf("before = %p\n",sortedword);
-	mysort(q,sortedword,len);
-	printf("after = %p\n",sortedword);
-	listprint(sortedword->next);
+	mysort(start,sortedword,len);
+	listprint(sortedword);
 	return 0;
 }
-
 
 struct tnode *addword(struct tnode *p, char *w)
 {
@@ -93,33 +82,32 @@ int length(struct tnode *p)
 
 void mysort(struct tnode *q,struct tnode *sortedword,int len)
 {
-	int i,maxnumber;
-	struct tnode *t, *savenode, *outforsave;
-
-	
-	for(i = 0; i < len; ++i)
+	for(int i = 0; i < len; ++i)
 	{
-		sortedword->next = talloc();
-		t = q;
-		maxnumber = 0;
-		for(; t->next != NULL; t = t->next)
+		int maxnumber = 0;
+		struct tnode *t, *savenode, *addsave;
+
+		for(t = q; t->next != NULL; t = t->next)
 		{
 			if (t->next->count > maxnumber)
 			{
 				maxnumber = t->next->count;
-				savenode = t;
+				savenode = t; //最大のカウントのノードの手前を指すノード
 			}
 		}
-		sortedword = sortedword->next;
-		outforsave = savenode->next;
-		sortedword->next = outforsave;
-		savenode = savenode->next->next;
+
+		addsave = savenode->next; // 新しい短方向リストに最大のノードを保持する
+		savenode->next = savenode->next->next; //旧リストの最大のノードを飛ばしている
+		sortedword->count = addsave->count; //sortedwordのnextノードも保持してしまうため一つずつコピー。
+		sortedword->word = addsave->word; //sortedwordのnextノードも保持してしまうためwordのノードをcopy。
+		sortedword->next = talloc(); //NULLの状態だからメモリを確保する
+		sortedword = sortedword->next; //sortedwordを更新する
 	}
 }
 
 void listprint(struct tnode *q)
 {
-	if (q != NULL) 
+	if (q->next != NULL) 
 	{
 		printf("%4d %s\n",q->count, q->word);
 		listprint(q->next);
