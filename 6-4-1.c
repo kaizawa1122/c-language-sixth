@@ -48,8 +48,12 @@ int main(void)
 	}
 	t->next = talloc();
 
+	sortedword = talloc();
+
+	printf("before = %p\n",sortedword);
 	mysort(q,sortedword,len);
-	listprint(q->next);
+	printf("after = %p\n",sortedword);
+	listprint(sortedword->next);
 	return 0;
 }
 
@@ -87,20 +91,29 @@ int length(struct tnode *p)
 	return len;
 }
 
-void mysort(struct tnode *p,struct tnode *q,int len)
+void mysort(struct tnode *q,struct tnode *sortedword,int len)
 {
 	int i,maxnumber;
-	struct tnode *t;
+	struct tnode *t, *savenode, *outforsave;
 
+	
 	for(i = 0; i < len; ++i)
 	{
-		t = p;
+		sortedword->next = talloc();
+		t = q;
+		maxnumber = 0;
 		for(; t->next != NULL; t = t->next)
 		{
-			if (t->next)
+			if (t->next->count > maxnumber)
 			{
+				maxnumber = t->next->count;
+				savenode = t;
 			}
 		}
+		sortedword = sortedword->next;
+		outforsave = savenode->next;
+		sortedword->next = outforsave;
+		savenode = savenode->next->next;
 	}
 }
 
