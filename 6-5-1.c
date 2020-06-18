@@ -80,7 +80,7 @@ struct nlist *prvlookup(char *s)
 		{
 			return np;
 		}
-	}
+}
 	return NULL;
 }
 struct nlist *install(char *name, char *defn)

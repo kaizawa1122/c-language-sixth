@@ -25,6 +25,7 @@ int main(void)
 	struct tnode *root,*q,*t,*sortedword;
 	char word[MAXWORD];
 	char *number;
+	int len;
 
 	root = NULL;
 
@@ -86,19 +87,22 @@ int length(struct tnode *p)
 	return len;
 }
 
-void mysort(struct tnode *p,struct tnode *q,int len);
+void mysort(struct tnode *p,struct tnode *q,int len)
 {
-	int i;
+	int i,maxnumber;
 	struct tnode *t;
+
 	for(i = 0; i < len; ++i)
 	{
 		t = p;
-		for(; p->next != NULL;)
+		for(; t->next != NULL; t = t->next)
 		{
+			if (t->next)
+			{
+			}
 		}
 	}
 }
-
 
 void listprint(struct tnode *q)
 {
