@@ -22,7 +22,7 @@ struct tnode {
 
 int main(void)
 {
-	struct tnode *root,*start,*sortedword;
+	struct tnode *root, *start, *sortedword;
 	char word[MAXWORD];
 	char *number;
 	int len;
@@ -42,7 +42,7 @@ int main(void)
 	start->next = root;
 	sortedword = talloc();
 
-	mysort(start,sortedword,len);
+	mysort(start, sortedword, len);
 	listprint(sortedword);
 	return 0;
 }
@@ -64,7 +64,7 @@ struct tnode *addword(struct tnode *p, char *w)
 	}
 	else 
 	{
-		p->next = addword(p->next,w);
+		p->next = addword(p->next, w);
 	}
 	return p;
 }
@@ -80,7 +80,7 @@ int length(struct tnode *p)
 	return len;
 }
 
-void mysort(struct tnode *q,struct tnode *sortedword,int len)
+void mysort(struct tnode *q, struct tnode *sortedword, int len)
 {
 	for(int i = 0; i < len; ++i)
 	{
